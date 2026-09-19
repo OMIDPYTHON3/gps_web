@@ -2,6 +2,10 @@
 
 A real-time, mobile-first GPS dashboard with automotive-style gauge, compass, and live metrics.
 
+## 🌐 Live Demo
+
+[**Open Demo Here**](https://omidpython3.github.io/gps_web/gps_live.html)
+
 ## Features
 
 - **Speed Gauge:** Animated SVG speedometer (0–180 km/h)
@@ -10,6 +14,7 @@ A real-time, mobile-first GPS dashboard with automotive-style gauge, compass, an
 - **Pulse Cards:** Subtle animation on every GPS update
 - **Progress Meters:** Visual bars for accuracy, altitude, bearing
 - **Dark/Light Theme:** Toggle with persistence
+- **Multi-language:** English & Persian (FA/EN switcher)
 - **Mobile First:** Responsive layout, touch-friendly
 
 ## Tech Stack
@@ -22,7 +27,7 @@ A real-time, mobile-first GPS dashboard with automotive-style gauge, compass, an
 
 1. Open `gps_live.html` in a modern browser (Chrome, Firefox, Safari, Edge).
 2. Grant location permission when prompted.
-3. Tap **شروع GPS** to start tracking.
+3. Tap **Start GPS** to begin tracking.
 
 ## Metrics Displayed
 
@@ -35,6 +40,7 @@ A real-time, mobile-first GPS dashboard with automotive-style gauge, compass, an
 | Accuracy | Horizontal & vertical accuracy |
 | Bearing | Direction of travel (0–360°) |
 | Coordinates | Latitude & Longitude (7 decimals) |
+| Advanced | DMS, UTM, ISO timestamps, raw JSON |
 
 ## Privacy
 

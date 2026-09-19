@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -17,7 +17,8 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,rgba(54,163,255,.13)
 .wrap{max-width:880px;margin:auto;padding:14px 13px 28px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
 h1{font-size:24px;margin:0}.sub{font-size:12px;color:var(--muted);margin-top:3px}
-.theme{width:auto;padding:9px 12px;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px;font-size:18px}
+.top-btns{display:flex;gap:8px}
+.theme,.langBtn{width:auto;padding:9px 12px;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px;font-size:16px;font-weight:800}
 button{cursor:pointer}
 .start{width:100%;border:0;border-radius:15px;padding:14px;font-size:16px;font-weight:800;background:var(--accent);color:white;box-shadow:var(--shadow);transition:.2s}
 .start:active{transform:scale(.98)}.start.stop{background:var(--danger)}
@@ -71,8 +72,6 @@ button{cursor:pointer}
 .nerd-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px}
 .nerd-box{padding:13px 14px}
 .nerd-box .value{font-size:15px}
-.note{padding:14px 15px;font-size:12px;line-height:1.9;color:var(--muted)}
-.note b{color:var(--text)}
 pre.raw{margin:0;padding:14px;font-size:11px;line-height:1.7;direction:ltr;text-align:left;white-space:pre-wrap;word-break:break-all;color:var(--muted);max-height:220px;overflow:auto}
 .footer{text-align:center;color:var(--muted);font-size:10px;margin-top:16px;line-height:1.7}
 @media(min-width:650px){.dashboard{grid-template-columns:repeat(3,1fr)}.nerd-row{grid-template-columns:1fr 1fr 1fr}}
@@ -81,38 +80,41 @@ pre.raw{margin:0;padding:14px;font-size:11px;line-height:1.7;direction:ltr;text-
 <body>
 <div class="wrap">
  <div class="top">
-  <div><h1>🚗 GPS Live</h1><div class="sub">داشبورد زنده GPS • Automotive Edition</div></div>
-  <button class="theme" id="themeBtn" onclick="toggleTheme()">🌙</button>
+  <div><h1>🚗 GPS Live</h1><div class="sub" data-i18n="subtitle">Live GPS Dashboard • Automotive Edition</div></div>
+  <div class="top-btns">
+   <button class="langBtn" id="langBtn" onclick="toggleLang()">FA</button>
+   <button class="theme" id="themeBtn" onclick="toggleTheme()">🌙</button>
+  </div>
  </div>
 
- <button id="btn" class="start" onclick="toggleGPS()">شروع GPS</button>
- <div id="status" class="status">GPS متوقف است</div>
+ <button id="btn" class="start" onclick="toggleGPS()" data-i18n="start">Start GPS</button>
+ <div id="status" class="status" data-i18n="statusStopped">GPS stopped</div>
 
  <div class="tabs">
-  <button class="tab-btn active" data-tab="dash" onclick="showTab('dash')">داشبورد</button>
-  <button class="tab-btn" data-tab="visual" onclick="showTab('visual')">نمایش گرافیکی</button>
-  <button class="tab-btn" data-tab="nerd" onclick="showTab('nerd')">اطلاعات پیشرفته</button>
+  <button class="tab-btn active" data-tab="dash" onclick="showTab('dash')" data-i18n="tabDash">Dashboard</button>
+  <button class="tab-btn" data-tab="visual" onclick="showTab('visual')" data-i18n="tabVisual">Visuals</button>
+  <button class="tab-btn" data-tab="nerd" onclick="showTab('nerd')" data-i18n="tabNerd">Advanced</button>
  </div>
 
  <!-- TAB 1: DASHBOARD -->
  <div class="tab-content active" id="tab-dash">
-  <div class="section-title">داشبورد</div>
+  <div class="section-title" data-i18n="secDash">Dashboard</div>
   <div class="dashboard">
-   <div class="card info" id="cSpeed"><div class="label">سرعت</div><div id="speedBox" class="value">0 <span class="unit">km/h</span></div><div class="meter"><i id="mSpeed"></i></div></div>
-   <div class="card info" id="cLat"><div class="label">عرض جغرافیایی</div><div id="lat" class="value small">—</div><div class="meter"><i id="mLat"></i></div></div>
-   <div class="card info" id="cLon"><div class="label">طول جغرافیایی</div><div id="lon" class="value small">—</div><div class="meter"><i id="mLon"></i></div></div>
-   <div class="card info" id="cAlt"><div class="label">ارتفاع</div><div id="alt" class="value">— <span class="unit">m</span></div><div class="meter"><i id="mAlt"></i></div></div>
-   <div class="card info" id="cAcc"><div class="label">دقت افقی</div><div id="acc" class="value">— <span class="unit">m</span></div><div class="meter"><i id="mAcc"></i></div></div>
-   <div class="card info" id="cVacc"><div class="label">دقت عمودی</div><div id="vacc" class="value">— <span class="unit">m</span></div><div class="meter"><i id="mVacc"></i></div></div>
-   <div class="card info" id="cBearing"><div class="label">جهت حرکت</div><div id="bearing" class="value">— <span class="unit">°</span></div><div class="meter"><i id="mBearing"></i></div></div>
-   <div class="card info" id="cTime"><div class="label">آخرین آپدیت</div><div id="time" class="value small">—</div><div class="meter"><i id="mTime"></i></div></div>
-   <div class="card info" id="cCount"><div class="label">تعداد آپدیت</div><div id="count" class="value">0</div><div class="meter"><i id="mCount"></i></div></div>
+   <div class="card info" id="cSpeed"><div class="label" data-i18n="lblSpeed">Speed</div><div id="speedBox" class="value">0 <span class="unit">km/h</span></div><div class="meter"><i id="mSpeed"></i></div></div>
+   <div class="card info" id="cLat"><div class="label" data-i18n="lblLat">Latitude</div><div id="lat" class="value small">—</div><div class="meter"><i id="mLat"></i></div></div>
+   <div class="card info" id="cLon"><div class="label" data-i18n="lblLon">Longitude</div><div id="lon" class="value small">—</div><div class="meter"><i id="mLon"></i></div></div>
+   <div class="card info" id="cAlt"><div class="label" data-i18n="lblAlt">Altitude</div><div id="alt" class="value">— <span class="unit">m</span></div><div class="meter"><i id="mAlt"></i></div></div>
+   <div class="card info" id="cAcc"><div class="label" data-i18n="lblAcc">Horizontal accuracy</div><div id="acc" class="value">— <span class="unit">m</span></div><div class="meter"><i id="mAcc"></i></div></div>
+   <div class="card info" id="cVacc"><div class="label" data-i18n="lblVacc">Vertical accuracy</div><div id="vacc" class="value">— <span class="unit">m</span></div><div class="meter"><i id="mVacc"></i></div></div>
+   <div class="card info" id="cBearing"><div class="label" data-i18n="lblBearing">Heading</div><div id="bearing" class="value">— <span class="unit">°</span></div><div class="meter"><i id="mBearing"></i></div></div>
+   <div class="card info" id="cTime"><div class="label" data-i18n="lblTime">Last update</div><div id="time" class="value small">—</div><div class="meter"><i id="mTime"></i></div></div>
+   <div class="card info" id="cCount"><div class="label" data-i18n="lblCount">Update count</div><div id="count" class="value">0</div><div class="meter"><i id="mCount"></i></div></div>
   </div>
  </div>
 
  <!-- TAB 2: VISUAL -->
  <div class="tab-content" id="tab-visual">
-  <div class="section-title">سرعت</div>
+  <div class="section-title" data-i18n="secSpeed">Speed</div>
   <div class="card speed-card">
    <div class="gauge">
     <svg viewBox="0 0 500 245">
@@ -124,12 +126,12 @@ pre.raw{margin:0;padding:14px;font-size:11px;line-height:1.7;direction:ltr;text-
    </div>
    <div class="speed-stats">
     <div class="stat"><b id="ms">0.00</b><span>m/s</span></div>
-    <div class="stat"><b id="maxSpeed">0.0</b><span>بیشترین km/h</span></div>
-    <div class="stat"><b id="distance">0.00</b><span>مسافت km</span></div>
+    <div class="stat"><b id="maxSpeed">0.0</b><span data-i18n="statMax">max km/h</span></div>
+    <div class="stat"><b id="distance">0.00</b><span data-i18n="statDist">distance km</span></div>
    </div>
   </div>
 
-  <div class="section-title">قطب‌نما</div>
+  <div class="section-title" data-i18n="secCompass">Compass</div>
   <div class="card compass-card">
    <div class="compass" id="compass">
     <div class="dir N">N</div><div class="dir E">E</div><div class="dir S">S</div><div class="dir W">W</div>
@@ -138,7 +140,7 @@ pre.raw{margin:0;padding:14px;font-size:11px;line-height:1.7;direction:ltr;text-
    <div class="heading"><span id="headingBig">—</span>° <small id="headingText">—</small></div>
   </div>
 
-  <div class="section-title">ارتفاع</div>
+  <div class="section-title" data-i18n="secAltVisual">Altitude</div>
   <div class="card alt-card">
    <div class="alt-visual"><div id="altFill" class="alt-fill"></div><div id="altLine" class="alt-line"></div><div id="altBig" class="alt-number">— m</div></div>
   </div>
@@ -146,38 +148,77 @@ pre.raw{margin:0;padding:14px;font-size:11px;line-height:1.7;direction:ltr;text-
 
  <!-- TAB 3: NERD -->
  <div class="tab-content" id="tab-nerd">
-  <div class="section-title">مختصات (DMS و UTM)</div>
+  <div class="section-title" data-i18n="secCoord">Coordinates (DMS &amp; UTM)</div>
   <div class="nerd-row">
-   <div class="card nerd-box"><div class="label">عرض (DMS)</div><div id="latDMS" class="value small">—</div></div>
-   <div class="card nerd-box"><div class="label">طول (DMS)</div><div id="lonDMS" class="value small">—</div></div>
-   <div class="card nerd-box"><div class="label">UTM</div><div id="utm" class="value small">—</div></div>
+   <div class="card nerd-box"><div class="label" data-i18n="lblLatDMS">Latitude (DMS)</div><div id="latDMS" class="value small">—</div></div>
+   <div class="card nerd-box"><div class="label" data-i18n="lblLonDMS">Longitude (DMS)</div><div id="lonDMS" class="value small">—</div></div>
+   <div class="card nerd-box"><div class="label" data-i18n="lblUTM">UTM</div><div id="utm" class="value small">—</div></div>
   </div>
 
-  <div class="section-title">سرعت و مسافت (واحدهای دیگر)</div>
+  <div class="section-title" data-i18n="secSpeedAlt">Speed &amp; Distance (other units)</div>
   <div class="nerd-row">
-   <div class="card nerd-box"><div class="label">سرعت (mph / knot)</div><div id="speedAlt" class="value small">—</div></div>
-   <div class="card nerd-box"><div class="label">مسافت (mile / nmi)</div><div id="distAlt" class="value small">—</div></div>
-   <div class="card nerd-box"><div class="label">کیفیت دقت</div><div id="accQuality" class="value small">—</div></div>
+   <div class="card nerd-box"><div class="label" data-i18n="lblSpeedAltUnits">Speed (mph / knot)</div><div id="speedAlt" class="value small">—</div></div>
+   <div class="card nerd-box"><div class="label" data-i18n="lblDistAltUnits">Distance (mile / nmi)</div><div id="distAlt" class="value small">—</div></div>
+   <div class="card nerd-box"><div class="label" data-i18n="lblQuality">Accuracy quality</div><div id="accQuality" class="value small">—</div></div>
   </div>
 
-  <div class="section-title">زمان‌بندی</div>
+  <div class="section-title" data-i18n="secTime">Timing</div>
   <div class="nerd-row">
-   <div class="card nerd-box"><div class="label">Unix (ms)</div><div id="tsUnix" class="value small">—</div></div>
-   <div class="card nerd-box"><div class="label">ISO 8601</div><div id="tsISO" class="value small">—</div></div>
-   <div class="card nerd-box"><div class="label">فاصله از آپدیت قبلی</div><div id="tsDelta" class="value small">—</div></div>
+   <div class="card nerd-box"><div class="label" data-i18n="lblUnix">Unix (ms)</div><div id="tsUnix" class="value small">—</div></div>
+   <div class="card nerd-box"><div class="label" data-i18n="lblISO">ISO 8601</div><div id="tsISO" class="value small">—</div></div>
+   <div class="card nerd-box"><div class="label" data-i18n="lblDelta">Time since last update</div><div id="tsDelta" class="value small">—</div></div>
   </div>
 
-  <div class="section-title">خروجی خام مرورگر</div>
+  <div class="section-title" data-i18n="secRaw">Raw browser output</div>
   <div class="card"><pre class="raw" id="rawJson">—</pre></div>
  </div>
 
- <div class="footer">GPS با High Accuracy فعال است. دقت ارتفاع و جهت به سخت‌افزار و شرایط دریافت GPS وابسته است.</div>
+ <div class="footer" data-i18n="footer">High Accuracy GPS is enabled. Altitude and heading accuracy depend on hardware and GPS reception.</div>
 </div>
 
 <script>
+const T={
+ en:{subtitle:"Live GPS Dashboard • Automotive Edition",start:"Start GPS",stop:"Stop GPS",retry:"Retry GPS",
+  statusStopped:"GPS stopped",statusRequesting:"Requesting location access...",
+  err1:"Location access denied. Set the browser's Location permission to Allow.",
+  err2:"Location unavailable right now. Check your phone's GPS/Location.",
+  err3:"Getting location took too long.",errUnknown:"Unknown GPS error",errUnsupported:"This browser doesn't support GPS.",
+  tabDash:"Dashboard",tabVisual:"Visuals",tabNerd:"Advanced",
+  secDash:"Dashboard",secSpeed:"Speed",secCompass:"Compass",secAltVisual:"Altitude",
+  secCoord:"Coordinates (DMS & UTM)",secSpeedAlt:"Speed & Distance (other units)",secTime:"Timing",secRaw:"Raw browser output",
+  lblSpeed:"Speed",lblLat:"Latitude",lblLon:"Longitude",lblAlt:"Altitude",lblAcc:"Horizontal accuracy",lblVacc:"Vertical accuracy",
+  lblBearing:"Heading",lblTime:"Last update",lblCount:"Update count",statMax:"max km/h",statDist:"distance km",
+  lblLatDMS:"Latitude (DMS)",lblLonDMS:"Longitude (DMS)",lblUTM:"UTM",lblSpeedAltUnits:"Speed (mph / knot)",
+  lblDistAltUnits:"Distance (mile / nmi)",lblQuality:"Accuracy quality",lblUnix:"Unix (ms)",lblISO:"ISO 8601",lblDelta:"Time since last update",
+  footer:"High Accuracy GPS is enabled. Altitude and heading accuracy depend on hardware and GPS reception.",
+  qExcellent:"Excellent (≤5m)",qGood:"Good (≤10m)",qFair:"Fair (≤20m)",qPoor:"Poor (>20m)"},
+ fa:{subtitle:"داشبورد زنده GPS • Automotive Edition",start:"شروع GPS",stop:"توقف GPS",retry:"درخواست مجدد GPS",
+  statusStopped:"GPS متوقف است",statusRequesting:"در حال درخواست دسترسی به موقعیت...",
+  err1:"دسترسی به موقعیت رد شد. Location مرورگر را روی Allow بگذارید.",
+  err2:"موقعیت فعلاً در دسترس نیست. GPS/Location گوشی را بررسی کنید.",
+  err3:"دریافت موقعیت بیش از حد طول کشید.",errUnknown:"خطای ناشناخته GPS",errUnsupported:"این مرورگر از GPS پشتیبانی نمی‌کند.",
+  tabDash:"داشبورد",tabVisual:"نمایش گرافیکی",tabNerd:"اطلاعات پیشرفته",
+  secDash:"داشبورد",secSpeed:"سرعت",secCompass:"قطب‌نما",secAltVisual:"ارتفاع",
+  secCoord:"مختصات (DMS و UTM)",secSpeedAlt:"سرعت و مسافت (واحدهای دیگر)",secTime:"زمان‌بندی",secRaw:"خروجی خام مرورگر",
+  lblSpeed:"سرعت",lblLat:"عرض جغرافیایی",lblLon:"طول جغرافیایی",lblAlt:"ارتفاع",lblAcc:"دقت افقی",lblVacc:"دقت عمودی",
+  lblBearing:"جهت حرکت",lblTime:"آخرین آپدیت",lblCount:"تعداد آپدیت",statMax:"بیشترین km/h",statDist:"مسافت km",
+  lblLatDMS:"عرض (DMS)",lblLonDMS:"طول (DMS)",lblUTM:"UTM",lblSpeedAltUnits:"سرعت (mph / knot)",
+  lblDistAltUnits:"مسافت (mile / nmi)",lblQuality:"کیفیت دقت",lblUnix:"Unix (ms)",lblISO:"ISO 8601",lblDelta:"فاصله از آپدیت قبلی",
+  footer:"GPS با High Accuracy فعال است. دقت ارتفاع و جهت به سخت‌افزار و شرایط دریافت GPS وابسته است.",
+  qExcellent:"عالی (≤5m)",qGood:"خوب (≤10m)",qFair:"متوسط (≤20m)",qPoor:"ضعیف (>20m)"}
+};
+let lang=localStorage.getItem("gpsLang")||"en";
 let watchId=null,updates=0,maxKmh=0,distanceM=0,lastPos=null,lastHeading=null,lastTs=null;
 const $=id=>document.getElementById(id);
 const fmt=(v,d=2)=>Number.isFinite(v)?v.toFixed(d):"—";
+function applyStaticLang(){
+ document.documentElement.lang=lang;document.documentElement.dir=lang==="fa"?"rtl":"ltr";
+ document.querySelectorAll("[data-i18n]").forEach(el=>{const k=el.getAttribute("data-i18n");if(T[lang][k]!==undefined)el.textContent=T[lang][k]});
+ $("langBtn").textContent=lang==="fa"?"EN":"FA";
+ $("btn").textContent=watchId!==null?T[lang].stop:T[lang].start;
+ if(watchId===null)$("status").textContent=T[lang].statusStopped;
+}
+function toggleLang(){lang=lang==="fa"?"en":"fa";localStorage.setItem("gpsLang",lang);applyStaticLang()}
 function showTab(name){
  document.querySelectorAll(".tab-content").forEach(e=>e.classList.remove("active"));
  document.querySelectorAll(".tab-btn").forEach(e=>e.classList.remove("active"));
@@ -210,52 +251,63 @@ function toUTM(lat,lon){
  const a=6378137,f=1/298.257223563,k0=.9996,e2=f*(2-f),ep2=e2/(1-e2);
  const zone=Math.floor((lon+180)/6)+1,lonOrigin=(zone-1)*6-180+3;
  const lat_r=lat*Math.PI/180,lon_r=lon*Math.PI/180,lonO_r=lonOrigin*Math.PI/180;
- const N=a/Math.sqrt(1-e2*Math.sin(lat_r)**2),T=Math.tan(lat_r)**2,C=ep2*Math.cos(lat_r)**2,A=Math.cos(lat_r)*(lon_r-lonO_r);
+ const N=a/Math.sqrt(1-e2*Math.sin(lat_r)**2),T2=Math.tan(lat_r)**2,C=ep2*Math.cos(lat_r)**2,A=Math.cos(lat_r)*(lon_r-lonO_r);
  const M=a*((1-e2/4-3*e2**2/64-5*e2**3/256)*lat_r-(3*e2/8+3*e2**2/32+45*e2**3/1024)*Math.sin(2*lat_r)+(15*e2**2/256+45*e2**3/1024)*Math.sin(4*lat_r)-(35*e2**3/3072)*Math.sin(6*lat_r));
- let E=k0*N*(A+(1-T+C)*A**3/6+(5-18*T+T**2+72*C-58*ep2)*A**5/120)+500000;
- let Nn=k0*(M+N*Math.tan(lat_r)*(A**2/2+(5-T+9*C+4*C**2)*A**4/24+(61-58*T+T**2+600*C-330*ep2)*A**6/720));
+ let E=k0*N*(A+(1-T2+C)*A**3/6+(5-18*T2+T2**2+72*C-58*ep2)*A**5/120)+500000;
+ let Nn=k0*(M+N*Math.tan(lat_r)*(A**2/2+(5-T2+9*C+4*C**2)*A**4/24+(61-58*T2+T2**2+600*C-330*ep2)*A**6/720));
  if(lat<0)Nn+=10000000;
  return `${zone}${utmLetter(lat)} ${Math.round(E)}E ${Math.round(Nn)}N`;
 }
 function accQualityText(acc){
  if(!Number.isFinite(acc))return"—";
- if(acc<=5)return"عالی (≤5m)";
- if(acc<=10)return"خوب (≤10m)";
- if(acc<=20)return"متوسط (≤20m)";
- return"ضعیف (>20m)";
+ if(acc<=5)return T[lang].qExcellent;
+ if(acc<=10)return T[lang].qGood;
+ if(acc<=20)return T[lang].qFair;
+ return T[lang].qPoor;
 }
 function updatePosition(pos){
  const c=pos.coords,lat=c.latitude,lon=c.longitude;updates++;
- if(lastPos){const d=hav(lastPos,{lat,lon});if(d>=0&&d<100)distanceM+=d} lastPos={lat,lon};
- const kmh=Number.isFinite(c.speed)&&c.speed>=0?c.speed*3.6:0;if(kmh>maxKmh&&kmh<300)maxKmh=kmh;
+ const dtSec=lastTs!=null?(pos.timestamp-lastTs)/1000:null;
+ if(lastPos){
+  const d=hav(lastPos,{lat,lon});
+  if(d>=0&&d<100)distanceM+=d;
+ }
+ lastPos={lat,lon};
+ const speedMps=Number.isFinite(c.speed)&&c.speed>=0?c.speed:0;
+ const kmh=speedMps*3.6;
+ if(kmh>maxKmh&&kmh<300)maxKmh=kmh;
  $("lat").textContent=fmt(lat,7);$("lon").textContent=fmt(lon,7);
  $("alt").innerHTML=fmt(c.altitude,1)+' <span class="unit">m</span>';$("altBig").textContent=Number.isFinite(c.altitude)?fmt(c.altitude,1)+" m":"— m";
  $("acc").innerHTML=fmt(c.accuracy,1)+' <span class="unit">m</span>';$("vacc").innerHTML=(Number.isFinite(c.altitudeAccuracy)?fmt(c.altitudeAccuracy,1):"—")+' <span class="unit">m</span>';
  $("bearing").innerHTML=(Number.isFinite(c.heading)&&c.heading>=0?fmt(c.heading,1):"—")+' <span class="unit">°</span>';
  $("headingBig").textContent=Number.isFinite(c.heading)&&c.heading>=0?fmt(c.heading,1):"—";$("headingText").textContent=directionText(c.heading);
- $("ms").textContent=Number.isFinite(c.speed)&&c.speed>=0?fmt(c.speed,2):"0.00";$("maxSpeed").textContent=fmt(maxKmh,1);$("distance").textContent=fmt(distanceM/1000,2);
+ $("ms").textContent=fmt(speedMps,2);$("maxSpeed").textContent=fmt(maxKmh,1);$("distance").textContent=fmt(distanceM/1000,2);
  $("speedBox").innerHTML=fmt(kmh,1)+' <span class="unit">km/h</span>';
- $("time").textContent=new Date(pos.timestamp).toLocaleTimeString("fa-IR");$("count").textContent=updates;
+ $("time").textContent=new Date(pos.timestamp).toLocaleTimeString(lang==="fa"?"fa-IR":"en-US");$("count").textContent=updates;
  updateGauge(kmh);
  if(Number.isFinite(c.heading)&&c.heading>=0){$("needle").style.transform=`translateX(-50%) rotate(${c.heading}deg)`;lastHeading=c.heading}
  if(Number.isFinite(c.altitude)){let p=Math.max(8,Math.min(92,((c.altitude%500+500)%500)/500*84+8));$("altFill").style.height=p+"%";$("altLine").style.bottom=p+"%"}
  setMeter("mSpeed",Math.min(kmh/1.8,100));setMeter("mAcc",100-Math.min(c.accuracy,100));setMeter("mVacc",100-Math.min(c.altitudeAccuracy||100,100));setMeter("mBearing",Number.isFinite(c.heading)?70:5);setMeter("mCount",Math.min(updates%100,100));setMeter("mTime",100);setMeter("mAlt",Number.isFinite(c.altitude)?60:5);setMeter("mLat",70);setMeter("mLon",70);
  ["cSpeed","cLat","cLon","cAlt","cAcc","cVacc","cBearing","cTime","cCount"].forEach(pulse);
- $("status").textContent=`GPS فعال • دقت فعلی: ${fmt(c.accuracy,1)} متر`;
- // nerd tab
+ $("status").textContent=(lang==="fa"?`GPS فعال • دقت فعلی: ${fmt(c.accuracy,1)} متر`:`GPS active • current accuracy: ${fmt(c.accuracy,1)} m`);
  $("latDMS").textContent=toDMS(lat,true);$("lonDMS").textContent=toDMS(lon,false);$("utm").textContent=toUTM(lat,lon);
  const mph=kmh*0.621371,knot=kmh*0.539957;$("speedAlt").innerHTML=`${fmt(mph,1)} mph<br>${fmt(knot,1)} kt`;
  const mi=distanceM/1000*0.621371,nmi=distanceM/1000*0.539957;$("distAlt").innerHTML=`${fmt(mi,2)} mi<br>${fmt(nmi,2)} nmi`;
  $("accQuality").textContent=accQualityText(c.accuracy);
  $("tsUnix").textContent=pos.timestamp;$("tsISO").textContent=new Date(pos.timestamp).toISOString();
- $("tsDelta").textContent=lastTs?((pos.timestamp-lastTs)/1000).toFixed(2)+" s":"—";lastTs=pos.timestamp;
+ $("tsDelta").textContent=dtSec!=null?dtSec.toFixed(2)+" s":"—";lastTs=pos.timestamp;
  $("rawJson").textContent=JSON.stringify({latitude:c.latitude,longitude:c.longitude,altitude:c.altitude,accuracy:c.accuracy,altitudeAccuracy:c.altitudeAccuracy,heading:c.heading,speed:c.speed,timestamp:pos.timestamp},null,1);
 }
-function gpsError(err){const m={1:"دسترسی به موقعیت رد شد. Location مرورگر را روی Allow بگذارید.",2:"موقعیت فعلاً در دسترس نیست. GPS/Location گوشی را بررسی کنید.",3:"دریافت موقعیت بیش از حد طول کشید."};$("status").textContent=m[err.code]||"خطای ناشناخته GPS";if(err.code===1){$("btn").textContent="درخواست مجدد GPS";$("btn").classList.remove("stop")}}
-function startGPS(){if(!navigator.geolocation){$("status").textContent="این مرورگر از GPS پشتیبانی نمی‌کند.";return}if(watchId!==null)return;$("btn").textContent="توقف GPS";$("btn").classList.add("stop");$("status").textContent="در حال درخواست دسترسی به موقعیت...";watchId=navigator.geolocation.watchPosition(updatePosition,gpsError,{enableHighAccuracy:true,maximumAge:0,timeout:15000})}
-function toggleGPS(){if(watchId!==null){navigator.geolocation.clearWatch(watchId);watchId=null;$("btn").textContent="شروع GPS";$("btn").classList.remove("stop");$("status").textContent="GPS متوقف است"}else startGPS()}
+function gpsError(err){
+ const m={1:T[lang].err1,2:T[lang].err2,3:T[lang].err3};
+ $("status").textContent=m[err.code]||T[lang].errUnknown;
+ if(err.code===1){$("btn").textContent=T[lang].retry;$("btn").classList.remove("stop")}
+}
+function startGPS(){if(!navigator.geolocation){$("status").textContent=T[lang].errUnsupported;return}if(watchId!==null)return;$("btn").textContent=T[lang].stop;$("btn").classList.add("stop");$("status").textContent=T[lang].statusRequesting;watchId=navigator.geolocation.watchPosition(updatePosition,gpsError,{enableHighAccuracy:true,maximumAge:0,timeout:15000})}
+function toggleGPS(){if(watchId!==null){navigator.geolocation.clearWatch(watchId);watchId=null;$("btn").textContent=T[lang].start;$("btn").classList.remove("stop");$("status").textContent=T[lang].statusStopped}else startGPS()}
 function toggleTheme(){document.body.classList.toggle("light");localStorage.setItem("gpsTheme",document.body.classList.contains("light")?"light":"dark");$("themeBtn").textContent=document.body.classList.contains("light")?"☀️":"🌙"}
 if(localStorage.getItem("gpsTheme")==="light"){document.body.classList.add("light");$("themeBtn").textContent="☀️"}
+applyStaticLang();
 window.addEventListener("DOMContentLoaded",()=>setTimeout(startGPS,300));
 </script>
 </body>
